@@ -1,0 +1,25 @@
+From f863870940e5a6e82b8b3334392154f665c1ca09 Mon Sep 17 00:00:00 2001
+From: v1gnesh <v1gnesh@users.noreply.github.com>
+Date: Wed, 31 May 2023 06:13:36 +0000
+Subject: [PATCH] attempt thread-local-storage for concurrentqueue
+
+---
+ third_party/concurrentqueue/concurrentqueue.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/concurrentqueue/concurrentqueue.h b/third_party/concurrentqueue/concurrentqueue.h
+index 5375769b71..78db469ed0 100644
+--- a/third_party/concurrentqueue/concurrentqueue.h
++++ b/third_party/concurrentqueue/concurrentqueue.h
+@@ -194,7 +194,7 @@ namespace duckdb_moodycamel { namespace details {
+ // VS2013 doesn't support `thread_local`, and MinGW-w64 w/ POSIX threading has a crippling bug: http://sourceforge.net/p/mingw-w64/bugs/445
+ // g++ <=4.7 doesn't support thread_local either.
+ // Finally, iOS/ARM doesn't have support for it either, and g++/ARM allows it to compile but it's unconfirmed to actually work
+-#if (!defined(_MSC_VER) || _MSC_VER >= 1900) && (!defined(__MINGW32__) && !defined(__MINGW64__) || !defined(__WINPTHREADS_VERSION)) && (!defined(__GNUC__) || __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && (!defined(__APPLE__) || !TARGET_OS_IPHONE) && !defined(__arm__) && !defined(_M_ARM) && !defined(__aarch64__)
++#if (!defined(_MSC_VER) || _MSC_VER >= 1900) && (!defined(__MINGW32__) && !defined(__MINGW64__) || !defined(__WINPTHREADS_VERSION)) && (!defined(__GNUC__) || __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && (!defined(__APPLE__) || !TARGET_OS_IPHONE) && !defined(__arm__) && !defined(_M_ARM) && !defined(__aarch64__) && !defined(__MVS__)
+ // Assume `thread_local` is fully supported in all other C++11 compilers/platforms
+ //#define MOODYCAMEL_CPP11_THREAD_LOCAL_SUPPORTED    // always disabled for now since several users report having problems with it on
+ #endif
+-- 
+2.39.1
+

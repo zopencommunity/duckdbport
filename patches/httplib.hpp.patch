@@ -1,0 +1,43 @@
+From 4616525cc8d878e1c85d322b1694f5666762acfb Mon Sep 17 00:00:00 2001
+From: v1gnesh <v1gnesh@users.noreply.github.com>
+Date: Fri, 26 May 2023 12:20:34 +0000
+Subject: [PATCH] add net/if.h, strings.h and NI_MAXHOST for zos. exclude zos
+ from USE_IF2IP
+
+---
+ third_party/httplib/httplib.hpp | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/third_party/httplib/httplib.hpp b/third_party/httplib/httplib.hpp
+index 920a94b733..7d01aaec43 100644
+--- a/third_party/httplib/httplib.hpp
++++ b/third_party/httplib/httplib.hpp
+@@ -183,7 +183,16 @@ using socket_t = SOCKET;
+ 
+ #include <arpa/inet.h>
+ #include <cstring>
++#ifndef __MVS__
+ #include <ifaddrs.h>
++#endif
++#ifdef __MVS__
++#include <net/if.h>
++#include <strings.h>
++#ifndef NI_MAXHOST
++#define NI_MAXHOST 1025
++#endif
++#endif
+ #include <netdb.h>
+ #include <netinet/in.h>
+ #ifdef __linux__
+@@ -2668,7 +2677,7 @@ inline bool bind_ip_address(socket_t sock, const char *host) {
+ 	return ret;
+ }
+ 
+-#if !defined _WIN32 && !defined ANDROID
++#if !defined _WIN32 && !defined ANDROID && !defined __MVS__
+ #define USE_IF2IP
+ #endif
+ 
+-- 
+2.39.1
+

@@ -1,0 +1,27 @@
+From 89388cd64e545a300c286436612602a355dc5135 Mon Sep 17 00:00:00 2001
+From: v1gnesh <v1gnesh@users.noreply.github.com>
+Date: Fri, 26 May 2023 12:15:09 +0000
+Subject: [PATCH] include time.h to let header from zoslib be prioritized over
+ oelcpp's
+
+---
+ src/include/duckdb/common/mutex.hpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/include/duckdb/common/mutex.hpp b/src/include/duckdb/common/mutex.hpp
+index 58a80cb5c0..1758c0ffdb 100644
+--- a/src/include/duckdb/common/mutex.hpp
++++ b/src/include/duckdb/common/mutex.hpp
+@@ -8,6 +8,9 @@
+ 
+ #pragma once
+ 
++#ifdef __MVS__
++#include <time.h>
++#endif
+ #include <mutex>
+ 
+ namespace duckdb {
+-- 
+2.39.1
+

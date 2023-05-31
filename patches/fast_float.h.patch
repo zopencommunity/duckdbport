@@ -1,0 +1,25 @@
+From 814c254fa1587455398d35ac4b5861efe572208b Mon Sep 17 00:00:00 2001
+From: v1gnesh <v1gnesh@users.noreply.github.com>
+Date: Fri, 26 May 2023 12:18:37 +0000
+Subject: [PATCH] point to endian header for zos
+
+---
+ third_party/fast_float/fast_float/fast_float.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/third_party/fast_float/fast_float/fast_float.h b/third_party/fast_float/fast_float/fast_float.h
+index 736a32786e..d072fc7561 100644
+--- a/third_party/fast_float/fast_float/fast_float.h
++++ b/third_party/fast_float/fast_float/fast_float.h
+@@ -130,6 +130,8 @@ from_chars_result from_chars(const char *first, const char *last,
+ #include <machine/endian.h>
+ #elif defined(sun) || defined(__sun)
+ #include <sys/byteorder.h>
++#elif defined(__MVS__)
++#include <sys/endian.h>
+ #else
+ #include <endian.h>
+ #endif
+-- 
+2.39.1
+

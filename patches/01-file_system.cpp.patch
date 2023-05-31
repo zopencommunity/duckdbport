@@ -1,0 +1,73 @@
+From 2f350100e9ecf6728aaaa393c705da4cd445074a Mon Sep 17 00:00:00 2001
+From: v1gnesh <v1gnesh@users.noreply.github.com>
+Date: Fri, 26 May 2023 12:12:50 +0000
+Subject: [PATCH] use alternatives to _SC_PHYS_PAGES and PATH_MAX
+
+---
+ src/common/file_system.cpp | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/src/common/file_system.cpp b/src/common/file_system.cpp
+index 753e03b56f..be46042d64 100644
+--- a/src/common/file_system.cpp
++++ b/src/common/file_system.cpp
+@@ -23,6 +23,12 @@
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
++
++#ifdef __MVS__
++#define _XOPEN_SOURCE_EXTENDED 1
++#include <sys/resource.h>
++#endif
++
+ #else
+ #include <string>
+ #include <sysinfoapi.h>
+@@ -77,6 +83,34 @@ void FileSystem::SetWorkingDirectory(const string &path) {
+ 	}
+ }
+ 
++# ifdef __MVS__
++
++idx_t FileSystem::GetAvailableMemory() {
++    errno = 0;
++
++    struct rlimit limit;
++    int rlim_rc = getrlimit(RLIMIT_AS, &limit);
++	  idx_t max_memory = MinValue<idx_t>(limit.rlim_max, UINTPTR_MAX);
++
++    if (errno != 0) {
++        return DConstants::INVALID_INDEX;
++    }
++    return max_memory;
++}
++
++string FileSystem::GetWorkingDirectory() {
++
++    // use _XOPEN_PATH_MAX instead of PATH_MAX
++    auto buffer = make_unsafe_uniq_array<char>(_XOPEN_PATH_MAX);
++    char *ret = getcwd(buffer.get(), _XOPEN_PATH_MAX);
++    if (!ret) {
++      throw IOException("Could not get working directory!");
++    }
++    return string(buffer.get());
++}
++
++#else
++
+ idx_t FileSystem::GetAvailableMemory() {
+ 	errno = 0;
+ 	idx_t max_memory = MinValue<idx_t>((idx_t)sysconf(_SC_PHYS_PAGES) * (idx_t)sysconf(_SC_PAGESIZE), UINTPTR_MAX);
+@@ -95,6 +129,8 @@ string FileSystem::GetWorkingDirectory() {
+ 	return string(buffer.get());
+ }
+ 
++#endif
++
+ string FileSystem::NormalizeAbsolutePath(const string &path) {
+ 	D_ASSERT(IsPathAbsolute(path));
+ 	return path;
+-- 
+2.39.1
+
