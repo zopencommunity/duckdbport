@@ -1,0 +1,41 @@
+export ZOPEN_GIT_URL="https://github.com/duckdb/duckdb.git"
+export ZOPEN_GIT_DEPS="cmake make comp_clang ninja zoslib"
+export ZOPEN_TYPE="GIT"
+export ZOPEN_COMP=CLANG
+
+export ZOPEN_MAKE_OPTS="GEN=ninja -j2"
+export ZOPEN_CONFIGURE="cmake"
+
+zopen_init()
+{
+  echo "Parallel job to run: $ZOPEN_NUM_JOBS"
+}
+
+zopen_check_results()
+{
+  dir="$1"
+  pfx="$2"
+  chk="$1/$2_check.log"
+
+  # Echo the following information to gauge build health
+  echo "actualFailures:0"
+  echo "totalTests:1"
+  echo "expectedFailures:0"
+}
+
+zopen_append_to_env()
+{
+  # echo envars outside of PATH, MANPATH, LIBPATH
+}
+
+zopen_append_to_setup()
+{
+  # echo commands that will run when installing via setup.sh
+}
+
+zopen_get_version()
+{
+  # Modify to echo the version of your tool/library
+  # Rather than hardcoding the version, obtain the version by running the tool/library
+  echo "1.0.0"
+}
