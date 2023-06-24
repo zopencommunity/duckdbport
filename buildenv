@@ -1,3 +1,6 @@
+# bump: duckdb-version /DUCKDB_VERSION="(.*)"/ https://github.com/duckdb/duckdb.git|semver:*
+DUCKDB_VERSION=""
+
 # export ZOPEN_GIT_URL="https://github.com/duckdb/duckdb.git"
 export ZOPEN_GIT_URL="https://github.com/v1gnesh/duckdb.git"
 export ZOPEN_GIT_BRANCH="feature"
@@ -5,12 +8,18 @@ export ZOPEN_GIT_DEPS="cmake make comp_clang ninja zoslib"
 export ZOPEN_TYPE="GIT"
 export ZOPEN_COMP=CLANG
 
-export ZOPEN_MAKE_OPTS="GEN=ninja -j2 -k"
 export ZOPEN_CONFIGURE="cmake"
+export ZOPEN_MAKE_OPTS="GEN=ninja -j\$ZOPEN_NUM_JOBS -k"
+export ZOPEN_EXTRA_CONFIGURE_OPTS="-DBUILD_JEMALLOC_EXTENSION=false"
+export ZOPEN_CHECK="allunit"
+
+# export ZOPEN_EXTRA_LDFLAGS="-v"
+# export ZOPEN_EXTRA_CONFIGURE_OPTS="-DCMAKE_BUILD_TYPE=Debug"
+
 
 zopen_init()
 {
-  echo "Parallel job to run: $ZOPEN_NUM_JOBS"
+  # echo "Parallel job to run: $ZOPEN_NUM_JOBS"
 }
 
 zopen_check_results()
@@ -39,5 +48,5 @@ zopen_get_version()
 {
   # Modify to echo the version of your tool/library
   # Rather than hardcoding the version, obtain the version by running the tool/library
-  echo "1.0.0"
+  echo "$DUCKDB_VERSION"
 }
