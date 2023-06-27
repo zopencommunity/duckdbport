@@ -10,13 +10,16 @@ export ZOPEN_COMP=CLANG
 
 export ZOPEN_CONFIGURE="cmake"
 export ZOPEN_EXTRA_CONFIGURE_OPTS="-DENABLE_SANITIZER=FALSE -DBUILD_JEMALLOC_EXTENSION=FALSE"
-# export ZOPEN_MAKE_OPTS="GEN=ninja -j2 -k"
-export ZOPEN_MAKE_OPTS="GEN=ninja -j\$ZOPEN_NUM_JOBS -k"
+
+# build -> release
+# export ZOPEN_MAKE_OPTS="GEN=ninja -j\$ZOPEN_NUM_JOBS -k"
+# build -> debug
+export ZOPEN_MAKE_OPTS="GEN=ninja debug -j\$ZOPEN_NUM_JOBS -k"
+
 export ZOPEN_CHECK="skip"
+export ZOPEN_INSTALL="skip"
 
 # export ZOPEN_EXTRA_LDFLAGS="-v"
-# export ZOPEN_EXTRA_CONFIGURE_OPTS="-DCMAKE_BUILD_TYPE=Debug"
-
 
 zopen_init()
 {
