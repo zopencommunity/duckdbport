@@ -8,10 +8,6 @@ runs:
   using: 'docker'
   image: 'docker://mwader/bump'
 inputs:
-  bumpfile:
-    description: 'Bumpfile to read'
-    required: false
-    default: ''
   files:
     description: 'Files with embedded configuration or versions to update'
     required: false
