@@ -12,3 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: zosopentools/duckdbport/action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.BUMP_TOKEN }}
