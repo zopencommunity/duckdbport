@@ -10,7 +10,7 @@ runs:
 inputs:
   files:
     description: 'Files with embedded configuration or versions to update'
-    required: false
+    required: true
     default: 'buildenv'
   title_template:
     description: 'Commit and pull request title template'
