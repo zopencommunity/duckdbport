@@ -11,11 +11,8 @@ inputs:
   files:
     description: 'Files with embedded configuration or versions to update'
     required: true
-    default: 'buildenv'
-  bumpfile:
-    description: 'Bumpfile to read'
-    required: false
     default: ''
+    buildenv
   title_template:
     description: 'Commit and pull request title template'
     required: false
