@@ -1,5 +1,5 @@
 # bump: duckdb-version /DUCKDB_VERSION="(.*)"/ https://github.com/duckdb/duckdb.git|semver:*
-DUCKDB_VERSION="0.8.1"
+DUCKDB_VERSION="0.9.0"
 
 export ZOPEN_GIT_URL="https://github.com/duckdb/duckdb.git"
 export ZOPEN_GIT_DEPS="cmake make comp_clang ninja zoslib"
