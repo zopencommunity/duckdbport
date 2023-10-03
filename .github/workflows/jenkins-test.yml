@@ -35,8 +35,7 @@ jobs:
 
       - name: Trigger Jenkins Job
         run: |
-          set -x
-          JENKINS_JOB_URL="${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline-Test/buildWithParameters?token=jenkinstest"
+          JENKINS_JOB_URL="${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline/buildWithParameters?token=jenkinstest"
 
           RESPONSE=$(curl -k -X POST -s -i -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "${JENKINS_JOB_URL}" -F PORT_GITHUB_REPO="${{ fromJson(steps.request.outputs.data).head.repo.clone_url }}" -F PORT_DESCRIPTION="Github CI Test of ${{ fromJson(steps.request.outputs.data).head.repo.full_name }}" -F PORT_BRANCH="${{ fromJson(steps.request.outputs.data).head.ref }}" -F NO_PROMOTE="TRUE")
 
@@ -56,16 +55,16 @@ jobs:
           BUILD_NUMBER=$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/queue/item/${BUILD_NUMBER}/api/json" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" | jq -r '.executable.number')
 
           # Poll the Jenkins API to check if the build has completed
-          while [ "$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline-Test/${BUILD_NUMBER}/api/json" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" | jq -r '.building')" == "true" ]; do
+          while [ "$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline/${BUILD_NUMBER}/api/json" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" | jq -r '.building')" == "true" ]; do
               echo "Build in progress..."
               sleep 10
           done
 
           # Retrieve the console output of the Jenkins job
-          CONSOLE_OUTPUT=$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline-Test/${BUILD_NUMBER}/consoleText" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}")
+          CONSOLE_OUTPUT=$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline/${BUILD_NUMBER}/consoleText" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}")
           echo "$CONSOLE_OUTPUT"
 
-          if [ "$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline-Test/${BUILD_NUMBER}/api/json" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" | jq -r '.result')" != "SUCCESS" ]; then
+          if [ "$(curl -k -s "${{ secrets.JENKINS_SERVER_URL }}/job/Port-Pipeline/${BUILD_NUMBER}/api/json" -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" | jq -r '.result')" != "SUCCESS" ]; then
             echo "Job failed..."
             exit 1
           fi
