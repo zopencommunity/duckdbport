@@ -1,0 +1,14 @@
+diff --git a/tools/shell/linenoise.cpp b/tools/shell/linenoise.cpp
+index 77cfb61c39..2bb9e13248 100644
+--- a/tools/shell/linenoise.cpp
++++ b/tools/shell/linenoise.cpp
+@@ -293,7 +293,9 @@ static int enableRawMode(int fd) {
+ 	/* output modes - disable post processing */
+ 	raw.c_oflag &= ~(OPOST);
+ 	/* control modes - set 8 bit chars */
++#ifndef __MVS__
+ 	raw.c_iflag |= IUTF8;
++#endif
+ 	raw.c_cflag |= CS8;
+ 	/* local modes - choing off, canonical off, no extended functions,
+ 	 * no signal chars (^Z,^C) */
