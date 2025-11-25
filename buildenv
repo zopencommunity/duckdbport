@@ -14,15 +14,16 @@ export ZOPEN_CONFIGURE="cmake"
 export ZOPEN_EXTRA_CONFIGURE_OPTS="-DENABLE_SANITIZER=FALSE"
 
 # build -> release
-export ZOPEN_MAKE_OPTS="GEN=ninja -j\$ZOPEN_NUM_JOBS -k"
+export ZOPEN_MAKE_OPTS="CORE_EXTENSIONS=autocomplete;json GEN=ninja -j\$ZOPEN_NUM_JOBS -k"
 # build -> debug
-# export ZOPEN_MAKE_OPTS="GEN=ninja debug -j\$ZOPEN_NUM_JOBS -k"
+# export ZOPEN_MAKE_OPTS="CORE_EXTENSIONS=autocomplete;json GEN=ninja debug -j\$ZOPEN_NUM_JOBS -k"
 
 export ZOPEN_CHECK="./test/unittest"
 
 export ZOPEN_INSTALL="cmake"
 export ZOPEN_INSTALL_OPTS="--install ."
 
+export ZOPEN_EXTRA_CXXFLAGS="-D_XPLATFORM_SOURCE -fvisibility=default"
 # export ZOPEN_EXTRA_LDFLAGS="-v"
 
 zopen_init()
