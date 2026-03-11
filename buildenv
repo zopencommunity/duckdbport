@@ -1,5 +1,5 @@
 # bump: duckdb-version /DUCKDB_VERSION="(.*)"/ https://github.com/duckdb/duckdb.git|semver:*
-DUCKDB_VERSION="1.4.2"
+DUCKDB_VERSION="1.5.0"
 
 export ZOPEN_STABLE_URL="https://github.com/duckdb/duckdb.git"
 export ZOPEN_CATEGORIES="database"
@@ -23,6 +23,8 @@ export ZOPEN_CHECK="./test/unittest"
 export ZOPEN_INSTALL="cmake"
 export ZOPEN_INSTALL_OPTS="--install ."
 
+export ZOPEN_EXTRA_CXXFLAGS="-mzos-target=zosv3r1"
+export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv3r1"
 # export ZOPEN_EXTRA_LDFLAGS="-v"
 
 zopen_init()
