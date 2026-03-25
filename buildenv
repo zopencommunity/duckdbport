@@ -24,6 +24,7 @@ export ZOPEN_INSTALL="cmake"
 export ZOPEN_INSTALL_OPTS="--install ."
 
 export ZOPEN_EXTRA_CXXFLAGS="-mzos-target=zosv3r1"
+export ZOPEN_EXTRA_CPPFLAGS="-D_XPLATFORM_SOURCE=1"
 export ZOPEN_EXTRA_CFLAGS="-mzos-target=zosv3r1"
 # export ZOPEN_EXTRA_LDFLAGS="-v"
 
